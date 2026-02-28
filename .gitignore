@@ -1,0 +1,15 @@
+# Python cache
+__pycache__/
+*.pyc
+
+# Virtual environment
+venv/
+
+# Processed data
+data/processed/
+
+# Trained models
+data/models/
+
+# Mac files
+.DS_Store

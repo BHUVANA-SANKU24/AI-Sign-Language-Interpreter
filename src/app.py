@@ -1,7 +1,9 @@
-"""
-Sign Language Interpreter - Main Application
-Two-way communication system for sign language
-"""
+import sys
+import os
+from pathlib import Path
+
+# Add project root to path
+sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from src.generation.sign_animator import SignAnimator
 from src.generation.nlp_processor import NLPProcessor
@@ -19,8 +21,6 @@ from pathlib import Path
 import numpy as np
 import tensorflow as tf
 
-# Add src to path
-sys.path.insert(0, str(Path(__file__).parent.parent))
 
 
 class SignLanguageInterpreter:

@@ -141,12 +141,12 @@ class SignAnimator:
 
             # Add sign text with animation
             scale = 1.0 + 0.1 * np.sin(i * np.pi / 15)
-            text_size = cv2.getTextSize(sign, cv2.FONT_HERSHEY_BOLD, 2, 3)[0]
+            text_size = cv2.getTextSize(sign, cv2.FONT_HERSHEY_DUPLEX, 2, 3)[0]
             text_x = (640 - int(text_size[0] * scale)) // 2
             text_y = 280
 
             cv2.putText(frame, sign,
-                        (text_x, text_y), cv2.FONT_HERSHEY_BOLD, 2 * scale, (0, 0, 0), 3)
+                        (text_x, text_y), cv2.FONT_HERSHEY_DUPLEX, 2 * scale, (0, 0, 0), 3)
 
             # Add note
             cv2.putText(frame, "(Placeholder - Add video to data/sign_library/)",

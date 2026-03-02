@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SignBridge – Choose Your Mode</title>
+  <meta name="description"
+    content="SignBridge – AI-powered two-way ASL sign language interpreter. Choose Letter Mode or Conversation Mode." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;700;800&display=swap"
+    rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #06061a;
+      --card: rgba(255, 255, 255, 0.045);
+      --border: rgba(255, 255, 255, 0.09);
+      --cyan: #38bdf8;
+      --purple: #a78bfa;
+      --pink: #f472b6;
+      --green: #4ade80;
+      --text: #f0f4ff;
+      --muted: #8892b0;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
+
+    html {
+      scroll-behavior: smooth
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ---- Animated BG ---- */
+    .bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+      pointer-events: none
+    }
+
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(130px);
+      animation: float 14s ease-in-out infinite;
+      will-change: transform;
+      transition: transform 0.1s linear;
+    }
+
+    .o1 {
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(circle, #1d4ed8, transparent 70%);
+      top: -200px;
+      left: -180px;
+      opacity: .35;
+      animation-delay: 0s
+    }
+
+    .o2 {
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, #7c3aed, transparent 70%);
+      bottom: -160px;
+      right: -140px;
+      opacity: .3;
+      animation-delay: 5s
+    }
+
+    .o3 {
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, #0e7490, transparent 70%);
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      opacity: .25;
+      animation-delay: 10s
+    }
+
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translate(0, 0) scale(1)
+      }
+
+      33% {
+        transform: translate(25px, -20px) scale(1.04)
+      }
+
+      66% {
+        transform: translate(-20px, 25px) scale(0.97)
+      }
+    }
+
+    /* ---- Hero ---- */
+    .hero {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 80px 24px 40px;
+      min-height: 100vh;
+    }
+
+    /* Badge */
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: 100px;
+      padding: 6px 18px;
+      font-size: .75rem;
+      font-weight: 600;
+      letter-spacing: .06em;
+      color: var(--cyan);
+      text-transform: uppercase;
+      margin-bottom: 32px;
+      animation: fadeDown .6s ease forwards;
+    }
+
+    .badge-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--cyan);
+      animation: pulse 1.4s ease-in-out infinite
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1)
+      }
+
+      50% {
+        opacity: .3;
+        transform: scale(.8)
+      }
+    }
+
+    /* Logo */
+    .logo-emoji {
+      font-size: 5rem;
+      margin-bottom: 20px;
+      filter: drop-shadow(0 0 30px rgba(56, 189, 248, .5));
+      animation: handPulse 3s ease-in-out infinite, fadeDown .7s ease forwards;
+    }
+
+    @keyframes handPulse {
+
+      0%,
+      100% {
+        transform: scale(1) rotate(-5deg)
+      }
+
+      50% {
+        transform: scale(1.08) rotate(5deg)
+      }
+    }
+
+    /* Title */
+    .hero-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2.8rem, 6vw, 5rem);
+      font-weight: 800;
+      line-height: 1.05;
+      margin-bottom: 20px;
+      background: linear-gradient(135deg, #fff 0%, #38bdf8 40%, #a78bfa 70%, #f472b6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: fadeDown .8s ease forwards;
+    }
+
+    .hero-sub {
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      color: var(--muted);
+      max-width: 560px;
+      line-height: 1.7;
+      margin-bottom: 56px;
+      animation: fadeDown .9s ease forwards;
+    }
+
+    @keyframes fadeDown {
+      from {
+        opacity: 0;
+        transform: translateY(-18px)
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0)
+      }
+    }
+
+    /* ---- Mode Cards ---- */
+    .modes {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+      width: 100%;
+      max-width: 780px;
+      animation: fadeUp 1s ease forwards;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(24px)
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0)
+      }
+    }
+
+    .mode-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      padding: 40px 36px;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      cursor: pointer;
+      transition: transform .28s cubic-bezier(.34, 1.56, .64, 1),
+        border-color .28s, box-shadow .28s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .mode-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      opacity: 0;
+      transition: opacity .3s;
+    }
+
+    .mode-card:hover {
+      transform: translateY(-8px) scale(1.01)
+    }
+
+    .mode-card:hover::before {
+      opacity: 1
+    }
+
+    .mode-card.letter {
+      border-top: 3px solid var(--cyan);
+    }
+
+    .mode-card.letter:hover {
+      border-color: var(--cyan);
+      box-shadow: 0 24px 60px rgba(56, 189, 248, .18), 0 0 0 1px rgba(56, 189, 248, .15);
+    }
+
+    .mode-card.letter::before {
+      background: radial-gradient(circle at top left, rgba(56, 189, 248, .07), transparent 60%);
+    }
+
+    .mode-card.conversation {
+      border-top: 3px solid var(--purple);
+    }
+
+    .mode-card.conversation:hover {
+      border-color: var(--purple);
+      box-shadow: 0 24px 60px rgba(167, 139, 250, .18), 0 0 0 1px rgba(167, 139, 250, .15);
+    }
+
+    .mode-card.conversation::before {
+      background: radial-gradient(circle at top left, rgba(167, 139, 250, .07), transparent 60%);
+    }
+
+    .mode-icon {
+      font-size: 3rem;
+      width: 72px;
+      height: 72px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .letter .mode-icon {
+      background: rgba(56, 189, 248, .12);
+    }
+
+    .conversation .mode-icon {
+      background: rgba(167, 139, 250, .12);
+    }
+
+    .mode-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 800;
+    }
+
+    .letter .mode-title {
+      color: #fff
+    }
+
+    .conversation .mode-title {
+      color: #fff
+    }
+
+    .mode-desc {
+      font-size: .92rem;
+      color: var(--muted);
+      line-height: 1.7
+    }
+
+    .mode-features {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 4px
+    }
+
+    .feature-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: .82rem;
+      color: var(--muted)
+    }
+
+    .feature-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      flex-shrink: 0
+    }
+
+    .letter .feature-dot {
+      background: var(--cyan)
+    }
+
+    .conversation .feature-dot {
+      background: var(--purple)
+    }
+
+    .mode-cta {
+      margin-top: auto;
+      padding: 14px 24px;
+      border-radius: 12px;
+      font-size: .88rem;
+      font-weight: 700;
+      letter-spacing: .03em;
+      border: none;
+      cursor: pointer;
+      transition: all .25s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+    }
+
+    .letter .mode-cta {
+      background: linear-gradient(135deg, #38bdf8, #0284c7);
+      color: #fff;
+      box-shadow: 0 8px 24px rgba(56, 189, 248, .3);
+    }
+
+    .letter .mode-cta:hover {
+      box-shadow: 0 12px 32px rgba(56, 189, 248, .5);
+      transform: translateY(-2px);
+    }
+
+    .conversation .mode-cta {
+      background: linear-gradient(135deg, #a78bfa, #7c3aed);
+      color: #fff;
+      box-shadow: 0 8px 24px rgba(167, 139, 250, .3);
+    }
+
+    .conversation .mode-cta:hover {
+      box-shadow: 0 12px 32px rgba(167, 139, 250, .5);
+      transform: translateY(-2px);
+    }
+
+    /* ---- Spotlight behind hero ---- */
+    .hero-spotlight {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 700px;
+      height: 500px;
+      background: radial-gradient(ellipse at 50% 0%, rgba(56, 189, 248, .13) 0%, rgba(167, 139, 250, .07) 40%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ---- Noise overlay ---- */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      opacity: 0.025;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    /* ---- Stats strip ---- */
+    .stats {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 56px;
+      width: 100%;
+      max-width: 780px;
+    }
+
+    .stat {
+      text-align: center;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 18px 28px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color .3s, box-shadow .3s, transform .3s;
+    }
+
+    .stat::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(56, 189, 248, .06), rgba(167, 139, 250, .06));
+      opacity: 0;
+      transition: opacity .3s;
+    }
+
+    .stat:hover {
+      border-color: rgba(56, 189, 248, .4);
+      box-shadow: 0 0 24px rgba(56, 189, 248, .12);
+      transform: translateY(-3px);
+    }
+
+    .stat:hover::before {
+      opacity: 1;
+    }
+
+    .stat-num {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 2rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--cyan), var(--purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      position: relative;
+    }
+
+    .stat-label {
+      font-size: .72rem;
+      color: var(--muted);
+      margin-top: 4px;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      position: relative;
+    }
+
+    /* ---- Floating particles ---- */
+    .particles {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none
+    }
+
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      animation: drift linear infinite;
+      opacity: 0;
+    }
+
+    @keyframes drift {
+      0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 0
+      }
+
+      10% {
+        opacity: .6
+      }
+
+      90% {
+        opacity: .3
+      }
+
+      100% {
+        transform: translateY(-10vh) rotate(360deg);
+        opacity: 0
+      }
+    }
+
+    /* ---- Scroll reveal ---- */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ---- Page transition ---- */
+    .page-transition {
+      position: fixed;
+      inset: 0;
+      background: #06061a;
+      z-index: 9999;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .4s ease;
+    }
+
+    .page-transition.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    /* ---- Custom cursor ---- */
+    .cursor-dot {
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--cyan);
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: transform .1s ease, background .3s;
+      box-shadow: 0 0 12px var(--cyan);
+    }
+
+    .cursor-ring {
+      position: fixed;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(56, 189, 248, .5);
+      pointer-events: none;
+      z-index: 9997;
+      transform: translate(-50%, -50%);
+      transition: transform .15s ease, width .2s, height .2s, border-color .3s;
+    }
+
+    /* ---- Footer note ---- */
+    .footer-note {
+      position: relative;
+      z-index: 10;
+      padding: 24px 20px 32px;
+      text-align: center;
+      font-size: .72rem;
+      color: rgba(136, 146, 176, .6);
+      letter-spacing: .04em;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="bg">
+    <div class="orb o1"></div>
+    <div class="orb o2"></div>
+    <div class="orb o3"></div>
+  </div>
+
+  <!-- Floating particles -->
+  <div class="particles" id="particles"></div>
+
+  <!-- Custom cursor -->
+  <div class="cursor-dot" id="cursorDot"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+  <!-- Page transition overlay -->
+  <div class="page-transition" id="pageTransition"></div>
+
+  <section class="hero">
+    <div class="hero-spotlight"></div>
+    <div class="hero-badge reveal">
+      <span class="badge-dot"></span>
+      AI-Powered · Real-Time · ASL
+    </div>
+
+    <div class="logo-emoji reveal">🤟</div>
+
+    <h1 class="hero-title reveal">SignBridge</h1>
+    <p class="hero-sub reveal">
+      A two-way AI sign language interpreter.<br />
+      Detect ASL signs from your camera, or convert text into animated hand signs — in real time.
+    </p>
+
+    <!-- Mode Selection -->
+    <div class="modes">
+
+      <!-- Letter Mode -->
+      <a class="mode-card letter" href="app.html">
+        <div class="mode-icon">📝</div>
+        <div>
+          <h2 class="mode-title">Letter Mode</h2>
+          <p class="mode-desc">Real-time letter-by-letter ASL interpretation in both directions.</p>
+        </div>
+        <div class="mode-features">
+          <div class="feature-row"><span class="feature-dot"></span>Camera detects each ASL letter</div>
+          <div class="feature-row"><span class="feature-dot"></span>Type text → see letter-by-letter signs</div>
+          <div class="feature-row"><span class="feature-dot"></span>Live confidence score 🟢🟡🔴</div>
+          <div class="feature-row"><span class="feature-dot"></span>Performance dashboard + history</div>
+        </div>
+        <button class="mode-cta">Start Letter Mode →</button>
+      </a>
+
+      <!-- Conversation Mode -->
+      <a class="mode-card conversation" href="conversation.html">
+        <div class="mode-icon">🗣️</div>
+        <div>
+          <h2 class="mode-title">Conversation Mode</h2>
+          <p class="mode-desc">Word-by-word interpretation with full audio playback of the entire conversation.</p>
+        </div>
+        <div class="mode-features">
+          <div class="feature-row"><span class="feature-dot"></span>Sign full words → word labels appear</div>
+          <div class="feature-row"><span class="feature-dot"></span>Type sentences → one word at a time</div>
+          <div class="feature-row"><span class="feature-dot"></span>Full conversation transcript</div>
+          <div class="feature-row"><span class="feature-dot"></span>🔊 Read entire conversation aloud</div>
+        </div>
+        <button class="mode-cta">Start Conversation →</button>
+      </a>
+
+    </div>
+
+    <!-- Stats -->
+    <div class="stats reveal">
+      <div class="stat">
+        <div class="stat-num">26</div>
+        <div class="stat-label">ASL Letters</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">20+</div>
+        <div class="stat-label">Word Patterns</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">Real-Time</div>
+        <div class="stat-label">Detection</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">100%</div>
+        <div class="stat-label">Browser Only</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="footer-note">SignBridge · Powered by MediaPipe · Web Speech API · Runs fully in-browser</div>
+
+  <script>
+    /* ── Scroll Reveal ───────────────────────────── */
+    const revealEls = document.querySelectorAll('.reveal');
+    const revealObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+    }, { threshold: 0.15 });
+    revealEls.forEach(el => revealObs.observe(el));
+    // Trigger immediately for above-fold items
+    setTimeout(() => revealEls.forEach(el => {
+      const r = el.getBoundingClientRect();
+      if (r.top < window.innerHeight) el.classList.add('visible');
+    }), 50);
+
+    /* ── Page Transition ─────────────────────────── */
+    const overlay = document.getElementById('pageTransition');
+    document.querySelectorAll('a.mode-card').forEach(link => {
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        const href = link.getAttribute('href');
+        overlay.classList.add('active');
+        setTimeout(() => { window.location.href = href; }, 380);
+      });
+    });
+    window.addEventListener('pageshow', () => { overlay.classList.remove('active'); });
+
+    /* ── Custom Cursor ───────────────────────────── */
+    const dot = document.getElementById('cursorDot');
+    const ring = document.getElementById('cursorRing');
+    let cx2 = -100, cy2 = -100, rx2 = -100, ry2 = -100;
+    document.addEventListener('mousemove', e => { cx2 = e.clientX; cy2 = e.clientY; });
+    (function cursorTick() {
+      rx2 += (cx2 - rx2) * 0.12;
+      ry2 += (cy2 - ry2) * 0.12;
+      dot.style.left = cx2 + 'px'; dot.style.top = cy2 + 'px';
+      ring.style.left = rx2 + 'px'; ring.style.top = ry2 + 'px';
+      requestAnimationFrame(cursorTick);
+    })();
+    document.querySelectorAll('a,button').forEach(el => {
+      el.addEventListener('mouseenter', () => { ring.style.width = '48px'; ring.style.height = '48px'; ring.style.borderColor = 'rgba(167,139,250,.7)'; });
+      el.addEventListener('mouseleave', () => { ring.style.width = '32px'; ring.style.height = '32px'; ring.style.borderColor = 'rgba(56,189,248,.5)'; });
+    });
+
+    /* ── Floating Particles ───────────────────────── */
+    const container = document.getElementById('particles');
+    const colors = ['#38bdf8', '#a78bfa', '#f472b6', '#4ade80', '#fbbf24'];
+    for (let i = 0; i < 32; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      const size = 2 + Math.random() * 5;
+      p.style.cssText = `
+        width:${size}px;height:${size}px;
+        left:${Math.random() * 100}%;
+        background:${colors[Math.floor(Math.random() * colors.length)]};
+        box-shadow:0 0 ${size * 3}px ${colors[Math.floor(Math.random() * colors.length)]};
+        animation-duration:${8 + Math.random() * 14}s;
+        animation-delay:${-Math.random() * 20}s;
+      `;
+      container.appendChild(p);
+    }
+
+    /* ── Mouse Parallax ───────────────────────────── */
+    const orbs = Array.from(document.querySelectorAll('.orb'));
+    const cards = Array.from(document.querySelectorAll('.mode-card'));
+    const STRENGTH = [55, -40, 30];
+    const TILT = 5;
+    const LERP = 0.07;
+
+    let m = { x: 0.5, y: 0.5 };
+    let tg = { x: 0.5, y: 0.5 };
+
+    document.addEventListener('mousemove', e => {
+      tg.x = e.clientX / window.innerWidth;
+      tg.y = e.clientY / window.innerHeight;
+    });
+
+    /* Reset tilt when cursor leaves a card */
+    cards.forEach(card => {
+      card.style.transition = card.style.transition +
+        ', transform 0.18s cubic-bezier(.34,1.56,.64,1)';
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'perspective(900px) rotateX(0deg) rotateY(0deg) translateY(0) scale(1)';
+      });
+    });
+
+    function lerp(a, b, t) { return a + (b - a) * t; }
+
+    (function tick() {
+      m.x = lerp(m.x, tg.x, LERP);
+      m.y = lerp(m.y, tg.y, LERP);
+
+      const cx = m.x - 0.5;
+      const cy = m.y - 0.5;
+
+      /* Move orbs */
+      orbs.forEach((orb, i) => {
+        const s = STRENGTH[i] || 25;
+        orb.style.transform = `translate(${cx * s}px, ${cy * s}px)`;
+      });
+
+      /* 3-D tilt on cards */
+      cards.forEach(card => {
+        const r = card.getBoundingClientRect();
+        const ccx = (r.left + r.width / 2) / window.innerWidth;
+        const ccy = (r.top + r.height / 2) / window.innerHeight;
+        const ry = (m.x - ccx) * TILT;
+        const rx = (ccy - m.y) * TILT;
+        card.style.transform =
+          `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+      });
+
+      requestAnimationFrame(tick);
+    })();
+  </script>
+</body>
+
+</html>

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Python cache
 __pycache__/
 *.pyc
@@ -16,3 +17,15 @@ data/models/
 data/
 output/
 *.zip
+=======
+venv/
+__pycache__/
+*.pyc
+
+data/raw/
+data/processed/
+data/models/
+
+.env
+.DS_Store
+>>>>>>> b672454487d714b8a6e29420474f9df9ceadbf2b
